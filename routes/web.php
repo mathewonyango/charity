@@ -90,6 +90,10 @@ Route::middleware(['auth'])->prefix('portal')->name('portal.')->group(function (
     Route::get('/events/{id}/edit', [EventController::class, 'edit'])->name('events.edit');
         // Route to handle the form submission for updating the event
     Route::put('/events/{id}', [EventController::class, 'update'])->name('events.update');
+    Route::get('/portal/events/create', [EventController::class, 'portalCreateEvent'])->name('Pevents.create');
+    Route::post('/portal/events/post', [EventController::class, 'portalEventStore'])->name('events.store');
+
+
 
 
     // Route::post('users/{id}', [UserController::class, 'portalIndex'])->name('portal.contribution.index');

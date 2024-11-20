@@ -17,7 +17,7 @@
                         </div>
                         <div class="nk-block-head-content">
                             <div class="nk-block-tools">
-                                <a href="{{ route('portal.events.create') }}" class="btn btn-primary">
+                                <a href="{{ route('portal.Pevents.create') }}" class="btn btn-primary">
                                     <em class="icon ni ni-plus-circle"></em> Add Event
                                 </a>
                             </div>

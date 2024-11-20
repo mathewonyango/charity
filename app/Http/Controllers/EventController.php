@@ -141,6 +141,40 @@ class EventController extends Controller
 
 
 
+    public function portalEventStore(Request $request)
+    {
+        // Validate the incoming request
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'venue' => 'required|string|max:255',
+        ]);
+
+        $creatorId=Auth::user()->id;
+
+
+            // Create the event
+            $event = Event::create([
+                'title' => $validatedData['title'],
+                'description' => $validatedData['description'],
+                'category' => $validatedData['category'],
+                'type' => $validatedData['type'],
+                'start_date' => $validatedData['start_date'],
+                'end_date' => $validatedData['end_date'],
+                'venue' => $validatedData['venue'],
+                'creator_id' => $creatorId,
+                'status' => 'Ongoing',
+            ]);
+
+            // Redirect or respond with success
+            return redirect()->route('portal.Pevents.index')
+                             ->with('success', 'Event created successfully!');
+
+    }
 
 
 
@@ -160,6 +194,10 @@ public function toggleStatus($id)
     toast('Event status changed to successfully','success');
 
     return redirect()->back();
+}
+
+public function portalCreateEvent(){
+    return view('events.create');
 }
 
 }
