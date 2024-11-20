@@ -132,6 +132,8 @@ class EventController extends Controller
         // Fetch the events based on the filter
         $events = $query->orderBy('created_at', 'desc')->get();
         $events_count = $events->count();
+        toast( 'Event filtered successfully!','success',);
+
 
         return view('events.index', compact('events', 'events_count', 'status', 'filter'));
     }
@@ -172,9 +174,8 @@ class EventController extends Controller
             ]);
 
             // Redirect or respond with success
-            return redirect()->route('portal.Pevents.index')
-                             ->with('success', 'Event created successfully!');
-
+            toast( 'Event created successfully!','success',);
+            return redirect()->route('portal.Pevents.index');
     }
 
 

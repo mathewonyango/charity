@@ -24,7 +24,7 @@ class DashboardController extends Controller
 
     // Fetch pending and approved contributions
     $pendingContributions = Contribution::where('status', 'pending')->count();
-    $approvedContributions = Contribution::where('status', 'ongoing')->count();
+    $approvedContributions = Contribution::where('status', 'approved')->count();
 
     // Fetch ongoing and completed events
 
