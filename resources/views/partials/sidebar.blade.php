@@ -20,12 +20,15 @@
                         </a>
                     </li>
                     <li class="nk-menu-item ml-auto">
-
-                        <a href="{{route('logout')}}" class="nk-menu-link " data-offset="0,10">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                        <a href="#" class="nk-menu-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <span class="nk-menu-icon"><em class="icon ni ni-signout"></em></span>
                             <span class="nk-menu-text">Logout</span>
                         </a>
                     </li>
+
                 </ul>
             </div>
         </div>

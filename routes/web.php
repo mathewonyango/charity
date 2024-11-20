@@ -10,6 +10,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Auth\AuthenticationController;
+use Illuminate\Support\Facades\Auth;
+
 
 
 
@@ -40,8 +42,11 @@ Route::post('/api/events', [EventController::class, 'store']);
 
 Route::get('/login', [AuthenticationController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthenticationController::class, 'login'])->name('login.post');
-Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
-
+Route::post('/logout', function () {
+    Auth::logout();
+    toast('You have been logged out.','success');
+    return redirect()->route('login');
+})->name('logout');
 
 Route::middleware(['auth'])->prefix('portal')->name('portal.')->group(function () {
     // Dashboard
