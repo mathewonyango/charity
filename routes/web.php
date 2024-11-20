@@ -55,7 +55,7 @@ Route::middleware(['auth'])->prefix('portal')->name('portal.')->group(function (
     Route::get('/', [UserController::class, 'index'])->name('users.index');
     Route::get('/all', [UserController::class, 'all'])->name('users.all');
     Route::get('/create', [UserController::class, 'create'])->name('users.create');
-    Route::get('/show/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/portal/show/{user}', [UserController::class, 'show'])->name('users.show');
     Route::get('/settings/{id}', [UserController::class, 'settings'])->name('users.settings');
     Route::post('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
 // Route to show the edit form
