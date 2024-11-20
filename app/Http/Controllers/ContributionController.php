@@ -164,7 +164,7 @@ public function storeContribution(Request $request){
     // Redirect with a success message
     toast("Contribution created successfully!", "success");
 
-    return redirect()->back();
+    return view('contributions.index');
 
 }
 
