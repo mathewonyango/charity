@@ -168,6 +168,7 @@ class EventController extends Controller
                 'venue' => $validatedData['venue'],
                 'creator_id' => $creatorId,
                 'status' => 'Ongoing',
+                'user_id'=>$creatorId
             ]);
 
             // Redirect or respond with success
