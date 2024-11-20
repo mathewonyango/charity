@@ -281,4 +281,14 @@ public function update(Request $request, $id)
     return redirect()->route('portal.users.index');
 }
 
+
+public function show(User $user)
+    {
+
+        $roles = $this->permitted_roles();
+        // dd($institution);
+
+
+        return view('users.view', compact('user'));
+    }
 }
