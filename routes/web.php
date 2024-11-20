@@ -38,7 +38,7 @@ Route::post('/api/events', [EventController::class, 'store']);
 ///
 
 
-Route::get('/', [AuthenticationController::class, 'showLoginForm'])->name('login');
+Route::get('/login', [AuthenticationController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthenticationController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 
