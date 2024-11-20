@@ -14,7 +14,7 @@
                         <div class="nk-block-head-content">
                             <ul class="nk-block-tools gx-3">
                                 <li>
-                                    <a href="{{ route('users.index') }}" class="btn btn-primary">
+                                    <a href="{{ route('portal.users.index') }}" class="btn btn-primary">
                                         <em class="icon ni ni-arrow-left"></em>
                                         <span>Back</span>
                                     </a>

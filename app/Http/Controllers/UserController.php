@@ -285,7 +285,7 @@ public function update(Request $request, $id)
 public function show(User $user)
     {
 
-        $roles = $this->permitted_roles();
+        // $roles = $this->permitted_roles();
         // dd($institution);
 
 

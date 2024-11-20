@@ -85,10 +85,12 @@
                                         <div class="dropdown-inner">
                                             <ul class="link-list">
                                                 <li>
-                                                    <a href="{{ route('portal.users.show') }}">
+                                                    <a href="{{ route('portal.users.show', ['user' => auth()->user()->id]) }}">
                                                         <em class="icon ni ni-user-alt"></em><span>View Profile</span>
                                                     </a>
                                                 </li>
+
+
 
                                                 <li>
                                                     <a href="{{ route('portal.users.settings', auth()->user()->id) }}">
@@ -100,9 +102,12 @@
                                         <div class="dropdown-inner">
                                             <ul class="link-list">
                                                 <li>
-                                                    <a href="{{route('logout')}}">
-                                                        <em class="icon ni ni-signout"></em>
-                                                        <span>Sign out</span>
+                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                        @csrf
+                                                    </form>
+                                                    <a href="#" class="nk-menu-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                        <span class="nk-menu-icon"><em class="icon ni ni-signout"></em></span>
+                                                        <span class="nk-menu-text">Sign Out</span>
                                                     </a>
                                                 </li>
                                             </ul>

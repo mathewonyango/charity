@@ -38,6 +38,7 @@ Route::post('/api/events', [EventController::class, 'store']);
 
 
 ///
+Route::middleware('auth')->get('/', [DashboardController::class, 'dashboard'])->name('portal.dashboard');
 
 
 Route::get('/login', [AuthenticationController::class, 'showLoginForm'])->name('login');
@@ -50,13 +51,12 @@ Route::post('/logout', function () {
 
 Route::middleware(['auth'])->prefix('portal')->name('portal.')->group(function () {
     // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
     Route::get('/', [UserController::class, 'index'])->name('users.index');
     Route::get('/all', [UserController::class, 'all'])->name('users.all');
     Route::get('/create', [UserController::class, 'create'])->name('users.create');
     Route::get('/portal/show/{user}', [UserController::class, 'show'])->name('users.show');
-    Route::get('/settings/{id}', [UserController::class, 'settings'])->name('users.settings');
+    Route::get('/portal/settings/{id}', [UserController::class, 'settings'])->name('users.settings');
     Route::post('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
 // Route to show the edit form
     Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
@@ -67,7 +67,7 @@ Route::middleware(['auth'])->prefix('portal')->name('portal.')->group(function (
     Route::put('users/{id}', [UserController::class, 'update'])->name('users.update');
 
 
-    Route::put('users/{id}', [UserController::class, 'update'])->name('users.update');
+    // Route::put('users/{id}', [UserController::class, 'update'])->name('users.update');
 
     Route::get('contributions/{contribution}', [ContributionController::class, 'contributionEdit'])->name('contributions.edit');
 
