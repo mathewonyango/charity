@@ -333,17 +333,56 @@ public function resetPassword(Request $request)
 }
 
 
+
+
+
 public function fetchProfile(Request $request)
 {
+    // Fetch user based on user_id
     $user = User::where('id', $request->user_id)->first();
 
     if (!$user) {
-        return response()->json([
-            'code' => '404',
-            'message' => 'User not found',
-            'data' => null,
-        ], 404);
+        return response()->json(['error' => 'User not found'], 404);
     }
+
+    // Fetch pending contributions, pending events, and payments
+    $pending_contributions = $user->contributions()->where('status', 'Ongoing')->get();
+    $pending_events = $user->events()->where('status', 'Ongoing')->get();
+
+    // Fetch payments with associated event or contribution titles
+    $payments = $user->payments()->get()->map(function ($payment) {
+        if ($payment->event_id) {
+            // Fetch the event title
+            $event_title = $payment->event->title;
+        } else {
+            $event_title = null;
+        }
+
+        if ($payment->contribution_id) {
+            // Fetch the contribution title
+            $contribution_title = $payment->contribution->title;
+        } else {
+            $contribution_title = null;
+        }
+
+        // Return the payment data with associated titles
+        return [
+            'id' => $payment->id,
+            'user_id' => $payment->user_id,
+            'email' => $payment->email,
+            'order_id' => $payment->order_id,
+            'amount' => $payment->amount,
+            'quantity' => $payment->quantity,
+            'currency' => $payment->currency,
+            'reference' => $payment->reference,
+            'metadata' => json_decode($payment->metadata),
+            'status' => $payment->status,
+            'event_title' => $event_title,
+            'contribution_title' => $contribution_title,
+            'created_at' => $payment->created_at,
+            'updated_at' => $payment->updated_at
+        ];
+    });
 
     return response()->json([
         'code' => '000',
@@ -351,9 +390,9 @@ public function fetchProfile(Request $request)
         'data' => [
             'email' => $user->email,
             'phone_number' => $user->phone_number,
-            'pending_contributions' => $user->contributions()->where('status', 'pending')->get(),
-            'pending_events' => $user->events()->where('status', 'pending')->get(),
-            'payments' => $user->payments()->get(),
+            'pending_contributions' => $pending_contributions,
+            'pending_events' => $pending_events,
+            'payments' => $payments
         ],
     ], 200);
 }
