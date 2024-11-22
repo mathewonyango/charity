@@ -124,7 +124,7 @@ public function storeContribution(Request $request)
         'category' => 'required|string',
         'goal_amount' => 'required|numeric',
         'description' => 'required',
-        'duration' => 'required|date',
+        'duration' => 'required',
         'organizer_name' => 'required|string',
         'organizer_contact' => 'required|string',
         'image' => 'nullable|string', // Accept base64 string for image
