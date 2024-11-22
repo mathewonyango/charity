@@ -335,29 +335,27 @@ public function resetPassword(Request $request)
 
 public function fetchProfile(Request $request)
 {
-    $user = User::where('id',$request->user_id)->first();
+    $user = User::where('id', $request->user_id)->first();
 
     if (!$user) {
-        return response()->json(['message' => 'Unauthorized'], 999);
+        return response()->json([
+            'code' => '404',
+            'message' => 'User not found',
+            'data' => null,
+        ], 404);
     }
 
-    $payments = $user->payments()->with(['contribution', 'event'])->get();
-
     return response()->json([
-        'email' => $user->email,
-        'phone_number' => $user->phone_number,
-        'hasPaidForContribution' => $payments->whereNotNull('contribution_id')->isNotEmpty() ? 'yes' : 'no',
-        'hasPaidForEvent' => $payments->whereNotNull('event_id')->isNotEmpty() ? 'yes' : 'no',
-        'payments' => $payments->map(function ($payment) {
-            return [
-                'amount' => $payment->amount,
-                'type' => $payment->contribution_id ? 'contribution' : 'event',
-                'title' => $payment->contribution_id
-                    ? $payment->contribution->title
-                    : $payment->event->name,
-            ];
-        }),
-    ]);
+        'code' => '000',
+        'message' => 'Profile fetched successfully',
+        'data' => [
+            'email' => $user->email,
+            'phone_number' => $user->phone_number,
+            'pending_contributions' => $user->contributions()->where('status', 'pending')->get(),
+            'pending_events' => $user->events()->where('status', 'pending')->get(),
+            'payments' => $user->payments()->get(),
+        ],
+    ], 200);
 }
 
 }
