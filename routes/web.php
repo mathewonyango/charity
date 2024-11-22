@@ -49,7 +49,7 @@ Route::post('/api/reset-password', [UserController::class, 'resetPassword']);
 // Contribution routes
 Route::get('/api/contributions', [ContributionController::class, 'index']);
 Route::get('/api/user/contributions', [ContributionController::class, 'userContributions']);
-Route::post('/api/contributions', [ContributionController::class, 'store']);
+Route::post('/api/post/contributions', [ContributionController::class, 'store']);
 
 
 
