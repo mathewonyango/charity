@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,11 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8">
-        {{-- <h1 class="text-4xl font-bold mb-4 text-center text-blue-600">🚀 Lets Deploy on Friday or even Weekends! 🚀</h1> --}}
+        {{-- <h1 class="text-4xl font-bold mb-4 text-center text-blue-600">🚀 Lets Deploy on Friday or even Weekends! 🚀
+        </h1> --}}
         <div class="text-2xl font-bold mb-8 text-center text-purple-600" id="deploymentMessage">
             {{ $deploymentMessage }}
         </div>
@@ -30,13 +33,18 @@
         <div id="completionMessage" class="mt-4 p-4 bg-green-100 rounded hidden">
             Deployment completed successfully!
         </div>
+        <div class="mb-4">
+            <input type="checkbox" id="runMigration" class="mr-2">
+            <label for="runMigration" class="text-gray-700">Run database migrations during deployment</label>
+        </div>
+
         <div id="results" class="mt-4"></div>
         <!-- Git Commit History -->
         <div class="mt-8">
             <h2 class="text-2xl font-bold mb-4">Recent Git Commits</h2>
             <ul class="bg-white rounded shadow p-4">
                 @foreach($gitHistory as $commit)
-                    <li class="mb-2">{{ $commit }}</li>
+                <li class="mb-2">{{ $commit }}</li>
                 @endforeach
             </ul>
         </div>
@@ -60,50 +68,49 @@
         }
 
         function deploy() {
-            deployButton.disabled = true;
-            revertButton.classList.add('hidden');
-            progressContainer.classList.remove('hidden');
-            completionMessage.classList.add('hidden');
-            resultsContainer.innerHTML = '';
+    deployButton.disabled = true;
+    revertButton.classList.add('hidden');
+    progressContainer.classList.remove('hidden');
+    completionMessage.classList.add('hidden');
+    resultsContainer.innerHTML = '';
 
-            fetch('/deploy', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ resolvedConflicts: {} }) // Add this line to send resolved conflicts
-            })
-            .then(response => response.json())
-            .then(data => {
-                data.results.forEach((result, index) => {
-                    setTimeout(() => {
-                        updateProgress(index + 1, data.steps.length);
+    const runMigration = document.getElementById('runMigration').checked;
 
-                        const resultElement = document.createElement('div');
-                        resultElement.className = `p-4 mb-2 ${result.status === 'success' ? 'bg-green-100' : 'bg-red-100'}`;
-                        resultElement.innerHTML = `
-                            <h3 class="font-bold">${data.steps[index]}</h3>
-                            <p>${result.message}</p>
-${result.details ? `<pre class="mt-2 bg-gray-100 p-2 rounded">${result.details}</pre>` : ''}
-                        `;
-                        resultsContainer.appendChild(resultElement);
+    fetch('/deploy', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        },
+        body: JSON.stringify({ runMigration }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            const totalSteps = data.steps.length;
+            let currentStep = 0;
 
-                        if (index === data.results.length - 1) {
-                            deployButton.disabled = false;
-                            deployButton.textContent = 'Redeploy';
-                            revertButton.classList.remove('hidden');
-                            completionMessage.classList.remove('hidden');
-                        }
-                    }, index * 1000);
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                resultsContainer.innerHTML = '<div class="bg-red-100 p-4">An error occurred during deployment.</div>';
-                deployButton.disabled = false;
+            data.results.forEach(result => {
+                currentStep++;
+                updateProgress(currentStep, totalSteps);
+
+                const resultDiv = document.createElement('div');
+                resultDiv.textContent = `${result.message}`;
+                resultDiv.classList.add(result.status === 'success' ? 'text-green-600' : 'text-red-600');
+                resultsContainer.appendChild(resultDiv);
             });
-        }
+
+            if (data.results.every(result => result.status === 'success')) {
+                completionMessage.classList.remove('hidden');
+            }
+
+            deployButton.disabled = false;
+        })
+        .catch(error => {
+            console.error('Deployment failed:', error);
+            deployButton.disabled = false;
+        });
+}
+
 
         function revert() {
             deployButton.disabled = true;
@@ -225,4 +232,5 @@ ${result.details ? `<pre class="mt-2 bg-gray-100 p-2 rounded">${result.details}<
         });
     </script>
 </body>
+
 </html>

@@ -32,7 +32,8 @@ class DeploymentController extends Controller
             'Clearing application cache',
             'Clearing configuration cache',
             'Clearing view cache',
-            'Restarting queue worker'
+            'Running migrations (if confirmed)',
+            'Restarting queue worker',
         ];
 
         $results = [];
@@ -44,7 +45,6 @@ class DeploymentController extends Controller
             $gitOutput = $this->runCommand('git pull');
             $results[] = ['status' => 'success', 'message' => 'Git pull successful', 'details' => $gitOutput];
 
-            // Check for conflicts
             $conflicts = $this->checkForConflicts();
             if (!empty($conflicts)) {
                 $resolvedConflicts = $request->input('resolvedConflicts', []);
@@ -63,6 +63,14 @@ class DeploymentController extends Controller
             Artisan::call('view:clear');
             $results[] = ['status' => 'success', 'message' => 'View cache cleared'];
 
+            // Migration step
+            if ($request->input('runMigration') === true) {
+                Artisan::call('migrate');
+                $results[] = ['status' => 'success', 'message' => 'Database migrations completed'];
+            } else {
+                $results[] = ['status' => 'skipped', 'message' => 'Database migrations skipped'];
+            }
+
             Artisan::call('queue:restart');
             $results[] = ['status' => 'success', 'message' => 'Queue worker restarted'];
 
@@ -72,6 +80,7 @@ class DeploymentController extends Controller
 
         return response()->json(['steps' => $steps, 'results' => $results]);
     }
+
 
     public function revert()
     {
