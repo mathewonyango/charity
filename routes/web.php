@@ -59,6 +59,7 @@ Route::post('/api/contributions', [ContributionController::class, 'store']);
 
 
 
+Route::get('/api/user/profile', [UserController::class, 'fetchProfile']);
 
 
 

@@ -22,10 +22,24 @@ class Paystack extends Model
         'reference',
         'metadata',
         'status',
+        'contribution_id', // Foreign key for contribution
+        'event_id',        // Foreign key for event
     ];
 
     // Cast metadata as an array
     protected $casts = [
         'metadata' => 'array',
     ];
+
+    // Relationship to Contribution
+    public function contribution()
+    {
+        return $this->belongsTo(Contribution::class, 'contribution_id');
+    }
+
+    // Relationship to Event
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'event_id');
+    }
 }

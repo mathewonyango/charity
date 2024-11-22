@@ -29,4 +29,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Event::class,'creator_id');
     }
+    public function payments()
+    {
+        return $this->hasMany(Paystack::class);
+    }
 }
