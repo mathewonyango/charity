@@ -44,6 +44,10 @@ Route::get('api/paystack-payment-success', [PaystackController::class, 'handleGa
     ->name('paystack.success')
     ->withoutMiddleware('auth:sanctum');
 
+
+    Route::post('/api/events/pay', [PaystackController::class, 'eventPayment']);
+    Route::post('/api/contributions/pay', [PaystackController::class, 'makeContribution']);
+
 // User routes
 Route::post('/api/register', [UserController::class, 'register']);
 Route::post('/api/login', [UserController::class, 'login']);

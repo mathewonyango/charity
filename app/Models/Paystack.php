@@ -22,6 +22,7 @@ class Paystack extends Model
         'reference',
         'metadata',
         'status',
+        'user_id',
         'contribution_id', // Foreign key for contribution
         'event_id',        // Foreign key for event
     ];

@@ -6,6 +6,8 @@ use App\Models\Paystack;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+
 
 class PaystackController extends Controller
 {
@@ -60,4 +62,80 @@ class PaystackController extends Controller
         // Return a response, redirect or return view based on your needs
         return redirect()->route('paystack.success')->with('status', 'Payment processed successfully');
     }
+
+
+    // personal consuption
+    // Payment for an event
+    public function eventPayment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'event_id' => 'required|exists:events,id',
+            'amount' => 'required|numeric|min:1',
+            'quantity' => 'required|integer|min:1',
+            'currency' => 'required|string',
+            'reference' => 'required|string|unique:payments,reference',
+            'metadata' => 'nullable|json',
+            'user_id'=>'required',
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        $payment = Paystack::create([
+            'email' => $request->email,
+            'order_id' => $request->order_id ?? null,
+            'amount' => $request->amount,
+            'quantity' => $request->quantity,
+            'currency' => $request->currency,
+            'reference' => $request->reference,
+            'metadata' => $request->metadata ?? '{}',
+            'status' => 'pending',
+            'event_id' => $request->event_id,
+            'user_id'=>$request->user_id,
+
+        ]);
+
+        return response()->json(['message' => 'Event payment initiated successfully', 'data' => $payment], 201);
+    }
+
+    // Contribution payment
+    public function makeContribution(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'contribution_id' => 'required|exists:contributions,id',
+            'amount' => 'required|numeric|min:1',
+            'quantity' => 'required|integer|min:1',
+            'currency' => 'required|string',
+            'reference' => 'required|string|unique:payments,reference',
+            'metadata' => 'nullable|json',
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        $payment = Paystack::create([
+            'email' => $request->email,
+            'order_id' => $request->order_id ?? null,
+            'amount' => $request->amount,
+            'quantity' => $request->quantity,
+            'currency' => $request->currency,
+            'reference' => $request->reference,
+            'metadata' => $request->metadata ?? '{}',
+            'status' => 'pending',
+            'user_id'=>$request->user_id,
+            'contribution_id' => $request->contribution_id,
+        ]);
+
+        return response()->json(['message' => 'Contribution payment initiated successfully', 'data' => $payment], 201);
+    }
+
 }
+
+
+
