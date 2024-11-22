@@ -311,7 +311,7 @@ public function resetPassword(Request $request)
 
     // Search for user by email or phone number
     $user = User::where('email', $request->input('identifier'))
-                ->orWhere('phone', $request->input('identifier'))
+                ->orWhere('phone_number', $request->input('identifier'))
                 ->first();
 
     // If user not found, return an error
