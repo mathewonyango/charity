@@ -331,4 +331,33 @@ public function resetPassword(Request $request)
         'message' => 'Password reset successfully',
     ]);
 }
+
+
+public function fetchProfile(Request $request)
+{
+    $user = User::where('id',$request->user_id)->first();
+
+    if (!$user) {
+        return response()->json(['message' => 'Unauthorized'], 999);
+    }
+
+    $payments = $user->payments()->with(['contribution', 'event'])->get();
+
+    return response()->json([
+        'email' => $user->email,
+        'phone_number' => $user->phone_number,
+        'hasPaidForContribution' => $payments->whereNotNull('contribution_id')->isNotEmpty() ? 'yes' : 'no',
+        'hasPaidForEvent' => $payments->whereNotNull('event_id')->isNotEmpty() ? 'yes' : 'no',
+        'payments' => $payments->map(function ($payment) {
+            return [
+                'amount' => $payment->amount,
+                'type' => $payment->contribution_id ? 'contribution' : 'event',
+                'title' => $payment->contribution_id
+                    ? $payment->contribution->title
+                    : $payment->event->name,
+            ];
+        }),
+    ]);
+}
+
 }
