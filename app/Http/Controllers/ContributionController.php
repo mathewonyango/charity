@@ -28,7 +28,7 @@ class ContributionController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
+    public function create(Request $request)
 {
     // Validate the incoming data
     $validator = $request->validate([
