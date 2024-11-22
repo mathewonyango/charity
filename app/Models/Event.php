@@ -17,13 +17,17 @@ class Event extends Model
         'type',
         'start_date',
         'end_date',
+        'time',
         'venue',
+        'map_link',
+        'banner_image',
+        'organizer_name',
         'status',
     ];
 
     // Define relationships
     public function user()
     {
-        return $this->belongsTo(User::class ,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

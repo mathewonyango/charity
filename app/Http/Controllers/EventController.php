@@ -53,51 +53,66 @@ class EventController extends Controller
 
 
     public function store(Request $request)
-    {
-        $validator = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required',
-            'category' => 'required|string',
-            'type' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'venue' => 'required|string',
-        ]);
+{
+    // Validate the incoming data
+    $validator = $request->validate([
+        'title' => 'required|string|max:255', // Event Title
+        'description' => 'required', // Event Description
+        'category' => 'required|string', // Event Category
+        'type' => 'required|string', // Event Type (Online or In-Person)
+        'start_date' => 'required|date', // Event Start Date
+        'end_date' => 'required|date|after_or_equal:start_date', // Event End Date
+        'time' => 'required|string', // Event Time
+        'venue' => 'required|string', // Event Venue (Location/Address)
+        'map_link' => 'nullable|url', // Map Link (Optional)
+        'banner_image' => 'nullable|string', // Event Banner Image (Base64 string or file path)
+        'organizer_name' => 'required|string', // Organizer Name
+        'user_id' => 'required|integer|exists:users,id', // Ensure User exists in Users table
+    ]);
 
-        if (!$validator) {
-            return response()->json([
-                'code' => '999',
-                'message' => 'Validation error',
-            ], 400);
-        }
-        $creatorId=User::where('id',$request->user_id)->first();
-
-        if(!$creatorId){
-            return response()->json([
-                'message'=>'user does not exist!'
-            ]);
-        }
-
-        $event = Event::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'category' => $request->category,
-            'type' => $request->type,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'venue' => $request->venue,
-            'user_id' => $request->creator_id,
-            'status' => 'Ongoing',
-            // 'created_by' => $request->user_id,
-
-        ]);
-
+    if (!$validator) {
         return response()->json([
-            'code' => '000',
-            'message' => 'Event created successfully',
-            'data' => $event,
-        ], 201);
+            'code' => '999',
+            'message' => 'Validation error',
+        ], 400);
     }
+
+    // Check if user exists
+    $creator = User::find($request->user_id);
+
+    if (!$creator) {
+        return response()->json([
+            'message' => 'User does not exist!',
+        ], 404);
+    }
+
+    // Handle optional banner image
+    $bannerImage = $request->banner_image ?? null;
+
+    // Create the event
+    $event = Event::create([
+        'title' => $request->title,
+        'description' => $request->description,
+        'category' => $request->category,
+        'type' => $request->type,
+        'start_date' => $request->start_date,
+        'end_date' => $request->end_date,
+        'time' => $request->time,
+        'venue' => $request->venue,
+        'map_link' => $request->map_link,
+        'banner_image' => $bannerImage,
+        'organizer_name' => $request->organizer_name,
+        'user_id' => $request->user_id,
+        'status' => 'Ongoing',
+    ]);
+
+    return response()->json([
+        'code' => '000',
+        'message' => 'Event created successfully',
+        'data' => $event,
+    ], 201);
+}
+
 
 
 
