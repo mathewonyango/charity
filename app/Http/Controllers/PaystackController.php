@@ -121,10 +121,10 @@ class PaystackController extends Controller
 
         $payment = Paystack::create([
             'email' => $request->email,
-            'order_id' => $request->order_id ?? null,
+            'order_id' => $request->c_contribution_id ?? null,
             'amount' => $request->amount,
             'quantity' => $request->quantity,
-            'currency' => $request->currency,
+            'currency' => $request->currency 'KES',
             'reference' => $request->reference,
             'metadata' => $request->metadata ?? '{}',
             'status' => 'pending',
