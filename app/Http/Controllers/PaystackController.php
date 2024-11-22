@@ -74,7 +74,7 @@ class PaystackController extends Controller
             'amount' => 'required|numeric|min:1',
             'quantity' => 'required|integer|min:1',
             'currency' => 'required|string',
-            'reference' => 'required|string|unique:payments,reference',
+            'reference' => 'required|string|unique:paystack,reference',
             'metadata' => 'nullable|json',
             'user_id'=>'required',
 
@@ -110,7 +110,7 @@ class PaystackController extends Controller
             'amount' => 'required|numeric|min:1',
             'quantity' => 'required|integer|min:1',
             'currency' => 'required|string',
-            'reference' => 'required|string|unique:payments,reference',
+            'reference' => 'required|string|unique:paystack,reference',
             'metadata' => 'nullable|json',
 
         ]);
