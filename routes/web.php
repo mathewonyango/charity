@@ -49,8 +49,6 @@ Route::post('/api/reset-password', [UserController::class, 'resetPassword']);
 // Contribution routes
 Route::get('/api/contributions', [ContributionController::class, 'index']);
 Route::get('/api/user/contributions', [ContributionController::class, 'userContributions']);
-Route::post('/api/post/contributions', [ContributionController::class, 'store']);
-// Route::post('/api/create/contributions', [ContributionController::class, 'create']);
 
 
 
@@ -60,6 +58,8 @@ Route::post('/api/post/contributions', [ContributionController::class, 'store'])
 Route::get('/api/events', [EventController::class, 'index']);
 Route::get('/api/user/events', [EventController::class, 'userEvents']);
 Route::post('/api/events', [EventController::class, 'store']);
+Route::post('/api/post/contributions', [EventController::class, 'storeContribution']);
+
 
 
 
