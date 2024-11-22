@@ -346,27 +346,12 @@ public function fetchProfile(Request $request)
     }
 
     // Fetch pending contributions, pending events, and payments
-    $pending_contributions = $user->contributions()->where('status', 'Ongoing')->get();
-    $pending_events = $user->events()->where('status', 'Ongoing')->get();
+    $pending_contributions = $user->contributions()->where('status', 'pending')->get();
+    $pending_events = $user->events()->where('status', 'pending')->get();
 
     // Fetch payments with associated event or contribution titles
     $payments = $user->payments()->get()->map(function ($payment) {
-        if ($payment->event_id) {
-            // Fetch the event title
-            $event_title = $payment->event->title;
-        } else {
-            $event_title = null;
-        }
-
-        if ($payment->contribution_id) {
-            // Fetch the contribution title
-            $contribution_title = $payment->contribution->title;
-        } else {
-            $contribution_title = null;
-        }
-
-        // Return the payment data with associated titles
-        return [
+        $paymentData = [
             'id' => $payment->id,
             'user_id' => $payment->user_id,
             'email' => $payment->email,
@@ -377,11 +362,26 @@ public function fetchProfile(Request $request)
             'reference' => $payment->reference,
             'metadata' => json_decode($payment->metadata),
             'status' => $payment->status,
-            'event_title' => $event_title,
-            'contribution_title' => $contribution_title,
             'created_at' => $payment->created_at,
             'updated_at' => $payment->updated_at
         ];
+
+        // Conditionally include event and contribution titles
+        if ($payment->event_id && !$payment->contribution_id) {
+            $paymentData['event_title'] = $payment->event->title;
+        }
+
+        if ($payment->contribution_id && !$payment->event_id) {
+            $paymentData['contribution_title'] = $payment->contribution->title;
+        }
+
+        // If both event and contribution are present, include both titles
+        if ($payment->event_id && $payment->contribution_id) {
+            $paymentData['event_title'] = $payment->event->title;
+            $paymentData['contribution_title'] = $payment->contribution->title;
+        }
+
+        return $paymentData;
     });
 
     return response()->json([
@@ -396,5 +396,6 @@ public function fetchProfile(Request $request)
         ],
     ], 200);
 }
+
 
 }
