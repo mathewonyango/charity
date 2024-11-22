@@ -57,11 +57,70 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="buysell-field form-group">
+                                            <div class="form-label-group">
+                                                <label for="role" class="form-label">Role</label>
+                                            </div>
+                                            <div class="form-control-group">
+                                                <input type="text" id="role" class="form-control form-control-lg" name="role" value="{{ old('role', $user->role) }}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+
+                <!-- Events Section -->
+                <div class="nk-block nk-block-lg mt-4">
+                    <div class="card card-bordered">
+                        <div class="card-inner">
+                            <div class="card-head">
+                                <h5 class="card-title">My Events</h5>
+                            </div>
+                            @if($events->isEmpty())
+                                <p class="text-muted">No events created by this user.</p>
+                            @else
+                                <ul class="list-group">
+                                    @foreach($events as $event)
+                                        <li class="list-group-item">
+                                            <strong>{{ $event->title }}</strong>
+                                            <small>({{ $event->created_at->format('d M Y') }})</small>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contributions Section -->
+                <div class="nk-block nk-block-lg mt-4">
+                    <div class="card card-bordered">
+                        <div class="card-inner">
+                            <div class="card-head">
+                                <h5 class="card-title">My Contributions</h5>
+                            </div>
+                            @if($contributions->isEmpty())
+                                <p class="text-muted">No contributions created by this user.</p>
+                            @else
+                                <ul class="list-group">
+                                    @foreach($contributions as $contribution)
+                                        <li class="list-group-item">
+                                            <strong>{{ $contribution->description }}</strong>
+                                            <small>({{ $contribution->created_at->format('d M Y') }})</small>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

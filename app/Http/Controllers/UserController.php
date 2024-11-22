@@ -242,7 +242,7 @@ public function update(Request $request, $id)
     toast("User updated successfully!", "success");
 
     // Redirect back to the users list with a success message
-    return redirect()->route('users.index')->with('success', 'User updated successfully!');
+    return redirect()->route('portal.users.index');
 }
 
  public function create(){
@@ -283,12 +283,52 @@ public function update(Request $request, $id)
 
 
 public function show(User $user)
-    {
+{
+    // Fetch events created by the user
+    $events = $user->events()->latest()->get();
 
-        // $roles = $this->permitted_roles();
-        // dd($institution);
+    // Fetch contributions created by the user
+    $contributions = $user->contributions()->latest()->get();
+
+    return view('users.view', compact('user', 'events', 'contributions'));
+}
 
 
-        return view('users.view', compact('user'));
+public function resetPassword(Request $request)
+{
+    // Validate the incoming request
+    $validator = Validator::make($request->all(), [
+        'identifier' => 'required', // Either phone or email
+        'password' => 'required|min:8|confirmed', // Ensure password is confirmed
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 'error',
+            'errors' => $validator->errors(),
+        ], 400);
     }
+
+    // Search for user by email or phone number
+    $user = User::where('email', $request->input('identifier'))
+                ->orWhere('phone', $request->input('identifier'))
+                ->first();
+
+    // If user not found, return an error
+    if (!$user) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'User not found with the provided identifier',
+        ], 404);
+    }
+
+    // Update the user's password
+    $user->password = Hash::make($request->input('password'));
+    $user->save();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Password reset successfully',
+    ]);
+}
 }

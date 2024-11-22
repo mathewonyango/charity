@@ -74,23 +74,43 @@
                                     @foreach ($contributions as $contribution)
                                         <tr class="nk-tb-item">
                                             <td class="nk-tb-col">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- Avatar with initials -->
-                                                    <div class="user-avatar bg-dim-primary d-none d-sm-flex me-2">
-                                                        <span>{{ emailInitials($contribution->user->email) ?? 'N/A' }}</span>
+                                                <div class="d-flex align-items-center gap-3">
+                                                    @php
+                                                        $avatarStyle = getUserAvatarStyle($contribution->user->email);
+                                                    @endphp
+                                                    <div class="user-avatar rounded-circle d-none d-sm-flex align-items-center justify-content-center"
+                                                         style="
+                                                            width: 42px;
+                                                            height: 42px;
+                                                            font-weight: 600;
+                                                            background-color: {{ $avatarStyle['background'] }};
+                                                            color: {{ $avatarStyle['color'] }};
+                                                         ">
+                                                        <span class="text-uppercase">
+                                                            {{ getInitials($contribution->user->email) }}
+                                                        </span>
                                                     </div>
-                                                    <!-- Email -->
-                                                    {{ strtoupper($contribution->user->email ?? 'N/A') }}
+                                                    <span class="text-dark">{{ $contribution->user->email ?? 'N/A' }}</span>
                                                 </div>
                                             </td>
                                             <td class="nk-tb-col">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- Avatar with initials -->
-                                                    <div class="user-avatar bg-dim-primary d-none d-sm-flex me-2">
-                                                        <span>{{ getTitleInitials($contribution->title) ?? 'N/A' }}</span>
+                                                <div class="d-flex align-items-center gap-3">
+                                                    @php
+                                                        $avatarStyle = getUserAvatarStyle($contribution->title);
+                                                    @endphp
+                                                    <div class="user-avatar rounded-circle d-none d-sm-flex align-items-center justify-content-center"
+                                                         style="
+                                                            width: 42px;
+                                                            height: 42px;
+                                                            font-weight: 600;
+                                                            background-color: {{ $avatarStyle['background'] }};
+                                                            color: {{ $avatarStyle['color'] }};
+                                                         ">
+                                                        <span class="text-uppercase">
+                                                            {{ getInitials($contribution->title) }}
+                                                        </span>
                                                     </div>
-                                                    <!-- Email -->
-                                                    {{ $contribution->title ?? 'N/A' }}
+                                                    <span class="text-dark">{{ $contribution->title?? 'N/A' }}</span>
                                                 </div>
                                             </td>
                                                                                         <td class="nk-tb-col">{{ $contribution->category }}</td>

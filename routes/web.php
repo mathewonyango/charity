@@ -11,15 +11,40 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Auth\AuthenticationController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\TwilioSMSController;
+use App\Http\Controllers\InfobipSMSController;
+use App\Http\Controllers\PaystackController;
+use App\Http\Controllers\DeploymentController;
 
 
 
+
+
+Route::get('/deploy', [DeploymentController::class, 'index'])->name('deploy.index');
+Route::post('/deploy', [DeploymentController::class, 'deploy'])->name('deploy.start');
+Route::post('/revert', [DeploymentController::class, 'revert'])->name('deploy.revert');
+
+// Route::get('sendSMS', [TwilioSMSController::class, 'index']);
+
+Route::post('api/send-sms', [InfobipSMSController::class, 'sendSMS']);
+
+
+//Paystack Route
+Route::get('api/paystack-onboard', [PaystackController::class, 'redirectToGateway'])
+    ->name('paystack.init')
+    ->withoutMiddleware('auth:sanctum');
+
+Route::get('api/paystack-payment-success', [PaystackController::class, 'handleGatewayCallback'])
+    ->name('paystack.success')
+    ->withoutMiddleware('auth:sanctum');
 
 // User routes
 Route::post('/api/register', [UserController::class, 'register']);
 Route::post('/api/login', [UserController::class, 'login']);
 Route::post('/api/validate-otp', [UserController::class, 'validateOtp']);
 Route::get('/api/profile', [UserController::class, 'profile']);
+Route::post('/api/reset-password', [UserController::class, 'resetPassword']);
+
 
 // Contribution routes
 Route::get('/api/contributions', [ContributionController::class, 'index']);
@@ -32,8 +57,6 @@ Route::post('/api/contributions', [ContributionController::class, 'store']);
 Route::get('/api/events', [EventController::class, 'index']);
 Route::get('/api/user/events', [EventController::class, 'userEvents']);
 Route::post('/api/events', [EventController::class, 'store']);
-
-
 
 
 
@@ -130,6 +153,7 @@ Route::middleware(['auth'])->prefix('portal')->name('portal.')->group(function (
 
     // Users
     Route::prefix('users')->name('users.')->group(function () {
+
         // Route::get('/', [UserController::class, 'index'])->name('index');
         // Route::get('/all', [UserController::class, 'all'])->name('all');
         // Route::get('/create', [UserController::class, 'create'])->name('create');

@@ -49,15 +49,25 @@
                                     @foreach ($users as $user)
                                         <tr class="nk-tb-item">
                                             <td class="nk-tb-col">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- Avatar with initials -->
-                                                    <div class="user-avatar bg-dim-primary d-none d-sm-flex me-2">
-                                                        <span>{{ emailInitials($user->email) ?? 'N/A' }}</span>
+                                                <div class="d-flex align-items-center gap-3">
+                                                    @php
+                                                        $avatarStyle = getUserAvatarStyle($user->email);
+                                                    @endphp
+                                                    <div class="user-avatar rounded-circle d-none d-sm-flex align-items-center justify-content-center"
+                                                         style="
+                                                            width: 42px;
+                                                            height: 42px;
+                                                            font-weight: 600;
+                                                            background-color: {{ $avatarStyle['background'] }};
+                                                            color: {{ $avatarStyle['color'] }};
+                                                         ">
+                                                        <span class="text-uppercase">
+                                                            {{ getInitials($user->email) }}
+                                                        </span>
                                                     </div>
-                                                    <!-- Email -->
-                                                    {{ $user->email ?? 'N/A' }}
+                                                    <span class="text-dark">{{ $user->email ?? 'N/A' }}</span>
                                                 </div>
-                                            </td>                                            <td class="nk-tb-col">{{ $user->phone_number}}</td>
+                                            </td>                                           <td class="nk-tb-col">{{ $user->phone_number}}</td>
                                             <td class="nk-tb-col">{{ ucfirst($user->role) }}</td>
                                             <td class="nk-tb-col">
                                                 <span class="badge badge-dot badge-{{ $user->status === 'active' ? 'success' : 'danger' }}">

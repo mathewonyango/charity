@@ -60,4 +60,54 @@ if (!function_exists('getTitleInitials')) {
 
 }
 
+function getInitials($email = null) {
+    if (!$email) return 'N/A';
+
+    // Extract name from email if possible
+    $name = strstr($email, '@', true);
+
+    // If no name found, use email
+    if (!$name) $name = $email;
+
+    // Split the name and get first two characters
+    $words = explode('.', $name);
+
+    // Get initials from first two words or first two characters
+    if (count($words) > 1) {
+        return strtoupper(
+            substr($words[0], 0, 1) .
+            substr($words[1], 0, 1)
+        );
+    }
+
+    // If single word, take first two characters
+    return strtoupper(substr($name, 0, 2));
+}
+
+function getAvatarColors($email) {
+    $colors = [
+        ['bg' => '#e6f3ff', 'text' => '#0068da'],
+        ['bg' => '#f0f7e0', 'text' => '#4a8f29'],
+        ['bg' => '#fff0e6', 'text' => '#d84315'],
+        ['bg' => '#e6e6ff', 'text' => '#3f51b5'],
+        ['bg' => '#fff3e0', 'text' => '#ff9800']
+    ];
+
+    // Generate a consistent index based on the email
+    $index = abs(crc32($email)) % count($colors);
+
+    return $colors[$index];
+}
+
+function getUserAvatarStyle($email) {
+    // Generate a consistent color based on the email
+    $hash = md5($email);
+    $hue = hexdec(substr($hash, 0, 6)) % 360;
+
+    return [
+        'background' => "hsl($hue, 70%, 90%)",
+        'color' => "hsl($hue, 70%, 40%)"
+    ];
+}
+
 // You can add other global helper functions here if needed.
