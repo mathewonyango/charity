@@ -29,48 +29,49 @@ class ContributionController extends Controller
     }
 
     public function store(Request $request)
-{
-    // Validate the incoming data
-    $validator = $request->validate([
-        'title' => 'required|string|max:255',
-        'category' => 'required|string',
-        'goal_amount' => 'required|numeric',
-        'description' => 'required',
-        'duration' => 'required|date',
-        'organizer_name' => 'required|string',
-        'organizer_contact' => 'required|string',
-        'image' => 'nullable|string', // Accept base64 string for image
-    ]);
+    {
+        // Validate the incoming data
+        $validator = $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'required|string',
+            'goal_amount' => 'required|numeric',
+            'description' => 'required',
+            'duration' => 'required',
+            'organizer_name' => 'required|string',
+            'organizer_contact' => 'required|string',
+            'image' => 'nullable|string', // Accept base64 string for image
+        ]);
 
-    if (!$validator) {
+        if (!$validator) {
+            return response()->json([
+                'code' => '999',
+                'message' => 'Validation error',
+            ], 400);
+        }
+
+
+
+        // Create the contribution record
+        $contribution = Contribution::create([
+            'title' => $request->title,
+            'category' => $request->category,
+            'goal_amount' => $request->goal_amount,
+            'description' => $request->description,
+            'duration' => $request->duration,
+            'organizer_name' => $request->organizer_name,
+            'organizer_contact' => $request->organizer_contact,
+            'user_id' => $request->user_id,
+            'status' => 'Ongoing',
+            'image' => $request->image, // Save the base64 image in the database
+        ]);
+
         return response()->json([
-            'code' => '999',
-            'message' => 'Validation error',
-        ], 400);
+            'code' => '000',
+            'message' => 'Contribution created successfully',
+            'data' => $contribution,
+        ], 201);
     }
 
-
-
-    // Create the contribution record
-    $contribution = Contribution::create([
-        'title' => $request->title,
-        'category' => $request->category,
-        'goal_amount' => $request->goal_amount,
-        'description' => $request->description,
-        'duration' => $request->duration,
-        'organizer_name' => $request->organizer_name,
-        'organizer_contact' => $request->organizer_contact,
-        'user_id' => $request->user_id,
-        'status' => 'Ongoing',
-        'image' => $request->image, // Save the base64 image in the database
-    ]);
-
-    return response()->json([
-        'code' => '000',
-        'message' => 'Contribution created successfully',
-        'data' => $contribution,
-    ], 201);
-}
 
 
 public function portalIndex(Request $request)
