@@ -74,7 +74,7 @@ class EventController extends Controller
 
         if(!$creatorId){
             return response()->json([
-                'message'=>'user not found'
+                'message'=>'user does not exist!'
             ]);
         }
 
@@ -86,7 +86,7 @@ class EventController extends Controller
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'venue' => $request->venue,
-            'creator_id' => $request->creator_id,
+            'user_id' => $request->creator_id,
             'status' => 'Ongoing',
             // 'created_by' => $request->user_id,
 
