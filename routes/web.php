@@ -15,6 +15,9 @@ use App\Http\Controllers\TwilioSMSController;
 use App\Http\Controllers\InfobipSMSController;
 use App\Http\Controllers\PaystackController;
 use App\Http\Controllers\DeploymentController;
+use App\Http\Controllers\LogViewerController;
+
+
 
 
 
@@ -23,6 +26,9 @@ use App\Http\Controllers\DeploymentController;
 Route::get('/deploy', [DeploymentController::class, 'index'])->name('deploy.index');
 Route::post('/deploy', [DeploymentController::class, 'deploy'])->name('deploy.start');
 Route::post('/revert', [DeploymentController::class, 'revert'])->name('deploy.revert');
+
+Route::get('/console', [LogViewerController::class, 'index']);
+Route::get('/console/{fileName}', [LogViewerController::class, 'show']);
 
 // Route::get('sendSMS', [TwilioSMSController::class, 'index']);
 
