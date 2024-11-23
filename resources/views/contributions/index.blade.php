@@ -76,8 +76,14 @@
                                             <td class="nk-tb-col">
                                                 <div class="d-flex align-items-center gap-3">
                                                     @php
-                                                    
-                                                        $avatarStyle = getUserAvatarStyle($contribution->user->email);
+                                                        // Assign a default email if user or email is not set
+                                                        $userEmail = $contribution->user->email ?? 'default@example.com';
+
+                                                        // Generate avatar style based on the email
+                                                        $avatarStyle = getUserAvatarStyle($userEmail);
+
+                                                        // Generate initials based on the email
+                                                        $initials = getInitials($userEmail);
                                                     @endphp
                                                     <div class="user-avatar rounded-circle d-none d-sm-flex align-items-center justify-content-center"
                                                          style="
@@ -88,11 +94,12 @@
                                                             color: {{ $avatarStyle['color'] }};
                                                          ">
                                                         <span class="text-uppercase">
-                                                            {{ getInitials($contribution->user->email) }}
+                                                            {{ $initials }}
                                                         </span>
                                                     </div>
                                                     <span class="text-dark">{{ $contribution->user->email ?? 'N/A' }}</span>
                                                 </div>
+
                                             </td>
                                             <td class="nk-tb-col">
                                                 <div class="d-flex align-items-center gap-3">
