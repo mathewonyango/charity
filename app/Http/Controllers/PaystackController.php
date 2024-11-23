@@ -67,23 +67,27 @@ class PaystackController extends Controller
     // personal consuption
     // Payment for an event
     public function eventPayment(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'event_id' => 'required|exists:events,id',
-            'amount' => 'required|numeric|min:1',
-            'quantity' => 'required|integer|min:1',
-            'currency' => 'required|string',
-            'reference' => 'required|string|unique:paystack,reference',
-            'metadata' => 'nullable|json',
-            'user_id'=>'required',
+{
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'event_id' => 'required|exists:events,id',
+        'amount' => 'required|numeric|min:1',
+        'quantity' => 'required|integer|min:1',
+        'currency' => 'required|string',
+        'reference' => 'required|string|unique:paystack,reference',
+        'metadata' => 'nullable|json',
+        'user_id' => 'required',
+    ]);
 
-        ]);
+    if ($validator->fails()) {
+        return response()->json([
+            'code' => '999',
+            'message' => 'Validation failed',
+            'errors' => $validator->errors()
+        ], 422);
+    }
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
-        }
-
+    try {
         $payment = Paystack::create([
             'email' => $request->email,
             'order_id' => $request->event_id ?? null,
@@ -94,12 +98,22 @@ class PaystackController extends Controller
             'metadata' => $request->metadata ?? '{}',
             'status' => 'pending',
             'event_id' => $request->event_id,
-            'user_id'=>$request->user_id,
-
+            'user_id' => $request->user_id,
         ]);
 
-        return response()->json(['message' => 'Event payment initiated successfully', 'data' => $payment], 201);
+        return response()->json([
+            'code' => '000',
+            'message' => 'Event payment initiated successfully',
+            'data' => $payment
+        ], 201);
+    } catch (\Exception $e) {
+        return response()->json([
+            'code' => '999',
+            'message' => 'An error occurred while initiating payment',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 
     // Contribution payment
     public function makeContribution(Request $request)
@@ -112,28 +126,45 @@ class PaystackController extends Controller
             'currency' => 'required|string',
             'reference' => 'required|string|unique:paystack,reference',
             'metadata' => 'nullable|json',
-
+            'user_id' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
+            return response()->json([
+                'code' => '999',
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
         }
 
-        $payment = Paystack::create([
-            'email' => $request->email,
-            'order_id' => $request->contribution_id ?? 0,
-            'amount' => $request->amount,
-            'quantity' => $request->quantity,
-            'currency' => $request->currency ?? 'KES',
-            'reference' => $request->reference,
-            'metadata' => $request->metadata ?? '{}',
-            'status' => 'pending',
-            'user_id'=>$request->user_id,
-            'contribution_id' => $request->contribution_id,
-        ]);
+        try {
+            $payment = Paystack::create([
+                'email' => $request->email,
+                'order_id' => $request->contribution_id ?? 0,
+                'amount' => $request->amount,
+                'quantity' => $request->quantity,
+                'currency' => $request->currency ?? 'KES',
+                'reference' => $request->reference,
+                'metadata' => $request->metadata ?? '{}',
+                'status' => 'pending',
+                'user_id' => $request->user_id,
+                'contribution_id' => $request->contribution_id,
+            ]);
 
-        return response()->json(['message' => 'Contribution payment initiated successfully', 'data' => $payment], 201);
+            return response()->json([
+                'code' => '000',
+                'message' => 'Contribution payment initiated successfully',
+                'data' => $payment
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => '999',
+                'message' => 'An error occurred while initiating payment',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
+
 
 }
 
