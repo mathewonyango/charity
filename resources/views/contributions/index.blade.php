@@ -67,7 +67,7 @@
                                         <th class="nk-tb-col"><span class="sub-text"> Amount Raised</span></th>
 
                                         <th class="nk-tb-col"><span class="sub-text">Status</span></th>
-                                        <th class="nk-tb-col"><span class="sub-text">Created At</span></th>
+                                        {{-- <th class="nk-tb-col"><span class="sub-text">Created At</span></th> --}}
                                         <th class="nk-tb-col nk-tb-col-tools text-right">Actions</th>
                                     </tr>
                                 </thead>
@@ -131,7 +131,7 @@
                                                     {{ ucfirst($contribution->status) }}
                                                 </span>
                                             </td>
-                                            <td class="nk-tb-col">{{ $contribution->created_at->format('d/m/Y') }}</td>
+                                            {{-- <td class="nk-tb-col">{{ $contribution->created_at->format('d/m/Y') }}</td> --}}
                                             <td class="nk-tb-col nk-tb-col-tools">
                                                 <ul class="nk-tb-actions gx-1">
                                                     <li>
