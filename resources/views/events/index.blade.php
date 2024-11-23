@@ -55,7 +55,7 @@
                                         <th class="nk-tb-col"><span class="sub-text">Title</span></th>
                                         <th class="nk-tb-col"><span class="sub-text">Category</span></th>
                                         <th class="nk-tb-col"><span class="sub-text">Venue</span></th>
-                                        <th class="nk-tb-col"><span class="sub-text">Status</span></th>
+                                        {{-- <th class="nk-tb-col"><span class="sub-text">Status</span></th> --}}
                                         <th class="nk-tb-col"><span class="sub-text">Start Date</span></th>
                                         <th class="nk-tb-col"><span class="sub-text">End Date</span></th>
                                         <th class="nk-tb-col nk-tb-col-tools text-right">Actions</th>
@@ -90,11 +90,11 @@
                                             <td class="nk-tb-col">{{ $event->category }}</td>
                                             <td class="nk-tb-col">{{ $event->venue }}</td>
 
-                                            <td class="nk-tb-col">
+                                            {{-- <td class="nk-tb-col">
                                                 <span class="badge badge-dot badge-{{ $event->status === 'pending' ? 'warning' : 'success' }}">
                                                     {{ ucfirst($event->status) }}
                                                 </span>
-                                            </td>
+                                            </td> --}}
 
                                             <td class="nk-tb-col">{{$event->start_date ?? 'N/A' }}</td>
                                             <td class="nk-tb-col">{{$event->end_date ?? 'N/A' }}</td>

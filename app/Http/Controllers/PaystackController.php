@@ -166,6 +166,23 @@ class PaystackController extends Controller
     }
 
 
+    public function index()
+    {
+        $transactions = Paystack::with(['user', 'contribution', 'event'])
+            ->latest()
+            ->get();
+
+        $transaction_count = $transactions->count();
+
+        return view('transactions.index', compact('transactions', 'transaction_count'));
+    }
+
+    // Function to view transaction details
+    public function show(Paystack $transaction)
+    {
+        return view('transactions.show', compact('transaction'));
+    }
+
 }
 
 

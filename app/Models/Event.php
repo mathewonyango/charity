@@ -66,4 +66,8 @@ class Event extends Model
     {
         $this->attributes['organizer_contact_info'] = json_encode($value);
     }
+
+
+
 }
+

@@ -21,7 +21,10 @@ use App\Http\Controllers\LogViewerController;
 
 
 
-
+Route::group(['prefix' => 'portal', 'as' => 'portal.'], function () {
+    Route::get('/transactions', [PaystackController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{transaction}', [PaystackController::class, 'show'])->name('transactions.show');
+});
 
 Route::get('/deploy', [DeploymentController::class, 'index'])->name('deploy.index');
 Route::post('/deploy', [DeploymentController::class, 'deploy'])->name('deploy.start');

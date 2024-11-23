@@ -60,13 +60,13 @@
                             <table class="datatable-init nowrap nk-tb-list nk-tb-ulist dataTable">
                                 <thead>
                                     <tr class="nk-tb-item nk-tb-head">
-                                        {{-- <th class="nk-tb-col"><span class="sub-text">Organizer Email</span></th> --}}
+                                        <th class="nk-tb-col"><span class="sub-text">Organizer Email</span></th>
                                         <th class="nk-tb-col"><span class="sub-text">Title</span></th>
                                         <th class="nk-tb-col"><span class="sub-text">Category</span></th>
                                         <th class="nk-tb-col"><span class="sub-text">Goal Amount</span></th>
                                         <th class="nk-tb-col"><span class="sub-text"> Amount Raised</span></th>
 
-                                        <th class="nk-tb-col"><span class="sub-text">Status</span></th>
+                                        {{-- <th class="nk-tb-col"><span class="sub-text">Status</span></th> --}}
                                         {{-- <th class="nk-tb-col"><span class="sub-text">Created At</span></th> --}}
                                         <th class="nk-tb-col nk-tb-col-tools text-right">Actions</th>
                                     </tr>
@@ -74,7 +74,7 @@
                                 <tbody>
                                     @foreach ($contributions as $contribution)
                                         <tr class="nk-tb-item">
-                                            {{-- <td class="nk-tb-col">
+                                            <td class="nk-tb-col">
                                                 <div class="d-flex align-items-center gap-3">
                                                     @php
                                                         // Assign a default email if user or email is not set
@@ -101,7 +101,7 @@
                                                     <span class="text-dark">{{ $contribution->user->email ?? 'N/A' }}</span>
                                                 </div>
 
-                                            </td> --}}
+                                            </td>
                                             <td class="nk-tb-col">
                                                 <div class="d-flex align-items-center gap-3">
                                                     @php
@@ -126,11 +126,11 @@
                                             <td class="nk-tb-col">{{ number_format($contribution->goal_amount, 2) }}</td>
                                             <td class="nk-tb-col">{{ number_format($contribution->currentAmount(), 2) }}</td>
 
-                                            <td class="nk-tb-col">
+                                            {{-- <td class="nk-tb-col">
                                                 <span class="badge badge-dot badge-{{ $contribution->status === 'pending' ? 'warning' : 'success' }}">
                                                     {{ ucfirst($contribution->status) }}
                                                 </span>
-                                            </td>
+                                            </td> --}}
                                             {{-- <td class="nk-tb-col">{{ $contribution->created_at->format('d/m/Y') }}</td> --}}
                                             <td class="nk-tb-col nk-tb-col-tools">
                                                 <ul class="nk-tb-actions gx-1">
