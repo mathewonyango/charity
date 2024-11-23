@@ -5,32 +5,39 @@ namespace App\Http\Controllers;
 use App\Models\Contribution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
 
 class ContributionController extends Controller
 {
     public function index()
-{
-    $contributions = Contribution::all()->map(function ($contribution) {
-        return [
-            'id' => $contribution->id,
-            'title' => $contribution->title,
-            'category' => $contribution->category,
-            'goal_amount' => $contribution->goal_amount,
-            'current_amount' => $contribution->current_amount, // Dynamically calculated
-            'end_date' => $contribution->end_date,
-            'status' => $contribution->isActive() ? 'active' : 'inactive',
-            'organizer_name' => $contribution->organizer_name,
-            'organizer_contact' => $contribution->organizer_contact,
-            'description' => $contribution->description,
-        ];
-    });
+    {
+        $contributions = Contribution::all()->map(function ($contribution) {
+            // Calculate the end date by adding the duration to updated_at
+            $endDate = $contribution->updated_at
+                ? Carbon::parse($contribution->updated_at)->addDays($contribution->duration)
+                : null;
 
-    return response()->json([
-        'code' => '000',
-        'message' => 'Contributions fetched successfully',
-        'data' => $contributions,
-    ], 200);
-}
+            return [
+                'id' => $contribution->id,
+                'title' => $contribution->title,
+                'category' => $contribution->category,
+                'goal_amount' => $contribution->goal_amount,
+                'description' => $contribution->description,
+                'status' => $contribution->status,
+                'current_amount' => $contribution->currentAmount(),
+                'is_active' => $contribution->currentAmount() < $contribution->goal_amount && ($endDate && $endDate->isFuture()),
+                'end_date' => $endDate ? $endDate->toDateString() : 'N/A',
+            ];
+        });
+
+        return response()->json([
+            'code' => '000',
+            'message' => 'Contributions fetched successfully',
+            'data' => $contributions,
+        ], 200);
+    }
+
 
 
     public function userContributions()

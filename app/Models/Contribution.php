@@ -53,5 +53,10 @@ class Contribution extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    public function getEndDateAttribute()
+    {
+        return $this->updated_at
+            ? Carbon::parse($this->updated_at)->addDays($this->duration)
+            : null;
+    }
 }
