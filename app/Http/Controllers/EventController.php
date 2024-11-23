@@ -18,15 +18,32 @@ use App\Models\Contribution
 class EventController extends Controller
 {
     public function index()
-    {
-        $events = Event::all();
-        return response()->json([
-            'code' => '000',
-            'message' => 'Events fetched successfully',
-            'data' => $events,
-        ], 200);
-    }
+{
+    $events = Event::all()->map(function ($event) {
+        return [
+            'id' => $event->id,
+            'title' => $event->title,
+            'description' => $event->description,
+            'category' => $event->category,
+            'type' => $event->type,
+            'start_date' => $event->start_date,
+            'end_date' => $event->end_date,
+            'time' => $event->time,
+            'venue' => $event->venue,
+            'map_link' => $event->map_link,
+            'banner_image' => $event->banner_image,
+            'organizer_name' => $event->organizer_name,
+            'status' => $event->status,
+            'is_active' => $event->is_active, // Include is_active status
+        ];
+    });
 
+    return response()->json([
+        'code' => '000',
+        'message' => 'Events fetched successfully',
+        'data' => $events,
+    ], 200);
+}
 
     public function userEvents(Request $request)
     {
