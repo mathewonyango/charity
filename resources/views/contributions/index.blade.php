@@ -55,45 +55,6 @@
                                 <a href="{{ route('portal.Pcontributions.index', ['open' => '0']) }}" class="btn btn-secondary">Closed Contributions</a>
                             </div>
 
-
-<style>
-    .table-responsive-custom {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.table-responsive-custom .datatable-init {
-    min-width: 100%;
-    table-layout: auto;
-    width: 100%;
-}
-
-.table-responsive-custom thead th {
-    white-space: nowrap;
-}
-
-.table-responsive-custom tbody td {
-    white-space: nowrap;
-}
-
-.table-responsive-custom th, .table-responsive-custom td {
-    text-align: left;
-}
-
-.table-responsive-custom .nk-tb-col-tools {
-    position: sticky;
-    right: 0;
-    background: #fff;  /* Optional, to avoid overlap with content */
-    z-index: 2;
-}
-
-/* Optional: Add some margin for actions to not overlap with other columns */
-.table-responsive-custom .nk-tb-actions {
-    min-width: 100px;
-}
-
-    </style>
                             <!-- Contributions Table -->
                             <div class="table-responsive-custom">
                             <table class="datatable-init nowrap nk-tb-list nk-tb-ulist dataTable">
@@ -101,8 +62,6 @@
                                     <tr class="nk-tb-item nk-tb-head">
                                         {{-- <th class="nk-tb-col"><span class="sub-text">Organizer Email</span></th> --}}
                                         <th class="nk-tb-col"><span class="sub-text">Title</span></th>
-                                        <th class="nk-tb-col"><span class="sub-text">Organizer Email</span></th>
-
                                         <th class="nk-tb-col"><span class="sub-text">Category</span></th>
                                         <th class="nk-tb-col"><span class="sub-text">Goal Amount</span></th>
                                         <th class="nk-tb-col"><span class="sub-text"> Amount Raised</span></th>
@@ -115,7 +74,7 @@
                                 <tbody>
                                     @foreach ($contributions as $contribution)
                                         <tr class="nk-tb-item">
-                                            <td class="nk-tb-col">
+                                            {{-- <td class="nk-tb-col">
                                                 <div class="d-flex align-items-center gap-3">
                                                     @php
                                                         // Assign a default email if user or email is not set
@@ -142,7 +101,7 @@
                                                     <span class="text-dark">{{ $contribution->user->email ?? 'N/A' }}</span>
                                                 </div>
 
-                                            </td>
+                                            </td> --}}
                                             <td class="nk-tb-col">
                                                 <div class="d-flex align-items-center gap-3">
                                                     @php
