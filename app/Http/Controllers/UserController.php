@@ -152,7 +152,6 @@ class UserController extends Controller
             return response()->json([
                 'code' => '999',
                 'message' => 'Invalid OTP.',
-                'user_data'=>$user
             ], 400);
         }
 
@@ -170,6 +169,8 @@ class UserController extends Controller
         return response()->json([
             'code' => '000',
             'message' => 'OTP validated successfully.',
+            'user_data'=>$user
+
         ], 200);
     }
 
