@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Contribution extends Model
 {
@@ -48,4 +49,9 @@ class Contribution extends Model
         $currentDate = Carbon::now();
         return $this->current_amount >= $this->goal_amount || $currentDate->greaterThan($this->end_date);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }
