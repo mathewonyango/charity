@@ -51,12 +51,12 @@
                                             <select id="role" name="role" class="form-control" required>
                                                 <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Admin</option>
                                                 <option value="user" {{ old('role', $user->role) === 'user' ? 'selected' : '' }}>User</option>
-                                                <option value="moderator" {{ old('role', $user->role) === 'moderator' ? 'selected' : '' }}>Moderator</option>
+                                                {{-- <option value="moderator" {{ old('role', $user->role) === 'moderator' ? 'selected' : '' }}>Moderator</option> --}}
                                             </select>
                                         </div>
                                     </div>
 
-                                    
+
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="status" class="form-label">Status</label>
