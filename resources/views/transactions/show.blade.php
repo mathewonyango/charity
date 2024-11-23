@@ -81,6 +81,16 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
+                                        <label class="form-label">Contribution title</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-control-plaintext">
+                                                {{ $transaction->contribution->title }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
                                         <label class="form-label">Date</label>
                                         <div class="form-control-wrap">
                                             <div class="form-control-plaintext">
