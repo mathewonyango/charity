@@ -5,19 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Contribution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-
 
 class ContributionController extends Controller
 {
     public function index()
     {
         $contributions = Contribution::all()->map(function ($contribution) {
-            // Calculate the end date by adding the duration to updated_at
-            $endDate = $contribution->updated_at
-                ? Carbon::parse($contribution->updated_at)->addDays($contribution->duration)
-                : null;
-
             return [
                 'id' => $contribution->id,
                 'title' => $contribution->title,
@@ -25,9 +18,9 @@ class ContributionController extends Controller
                 'goal_amount' => $contribution->goal_amount,
                 'description' => $contribution->description,
                 'status' => $contribution->status,
-                'current_amount' => $contribution->currentAmount(),
-                'is_active' => $contribution->currentAmount() < $contribution->goal_amount && ($endDate && $endDate->isFuture()),
-                'end_date' => $endDate ? $endDate->toDateString() : 'N/A',
+                'current_amount' => $contribution->currentAmount(), // No error now
+                'is_active' => $contribution->currentAmount() < $contribution->goal_amount && $contribution->end_date && $contribution->end_date->isFuture(),
+                'end_date' => $contribution->end_date ? $contribution->end_date->toDateString() : 'N/A',
             ];
         });
 

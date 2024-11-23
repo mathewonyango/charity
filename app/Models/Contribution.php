@@ -59,4 +59,10 @@ class Contribution extends Model
             ? Carbon::parse($this->updated_at)->addDays($this->duration)
             : null;
     }
+
+    public function currentAmount()
+{
+    // Sum the amounts from the Paystack table for this contribution
+    return $this->payments()->sum('amount');
+}
 }
