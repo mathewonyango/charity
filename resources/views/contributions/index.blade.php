@@ -65,6 +65,8 @@
 
                                         <th class="nk-tb-col"><span class="sub-text">Category</span></th>
                                         <th class="nk-tb-col"><span class="sub-text">Goal Amount</span></th>
+                                        <th class="nk-tb-col"><span class="sub-text"> Amount Raised</span></th>
+
                                         <th class="nk-tb-col"><span class="sub-text">Status</span></th>
                                         <th class="nk-tb-col"><span class="sub-text">Created At</span></th>
                                         <th class="nk-tb-col nk-tb-col-tools text-right">Actions</th>
@@ -123,6 +125,8 @@
                                             </td>
                                                                                         <td class="nk-tb-col">{{ $contribution->category }}</td>
                                             <td class="nk-tb-col">{{ number_format($contribution->goal_amount, 2) }}</td>
+                                            <td class="nk-tb-col">{{ number_format($contribution->currentAmount(), 2) }}</td>
+
                                             <td class="nk-tb-col">
                                                 <span class="badge badge-dot badge-{{ $contribution->status === 'pending' ? 'warning' : 'success' }}">
                                                     {{ ucfirst($contribution->status) }}
