@@ -9,14 +9,29 @@ use Illuminate\Support\Facades\Auth;
 class ContributionController extends Controller
 {
     public function index()
-    {
-        $contributions = Contribution::all();
-        return response()->json([
-            'code' => '000',
-            'message' => 'Contributions fetched successfully',
-            'data' => $contributions,
-        ], 200);
-    }
+{
+    $contributions = Contribution::all()->map(function ($contribution) {
+        return [
+            'id' => $contribution->id,
+            'title' => $contribution->title,
+            'category' => $contribution->category,
+            'goal_amount' => $contribution->goal_amount,
+            'current_amount' => $contribution->current_amount, // Dynamically calculated
+            'end_date' => $contribution->end_date,
+            'status' => $contribution->isActive() ? 'active' : 'inactive',
+            'organizer_name' => $contribution->organizer_name,
+            'organizer_contact' => $contribution->organizer_contact,
+            'description' => $contribution->description,
+        ];
+    });
+
+    return response()->json([
+        'code' => '000',
+        'message' => 'Contributions fetched successfully',
+        'data' => $contributions,
+    ], 200);
+}
+
 
     public function userContributions()
     {
