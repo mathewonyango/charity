@@ -72,65 +72,83 @@ class EventController extends Controller
 
 
     public function store(Request $request)
-{
-    // Validate the incoming data
-    $validator = $request->validate([
-        'title' => 'required|string|max:255', // Event Title
-        'description' => 'required', // Event Description
-        'category' => 'required|string', // Event Category
-        'type' => 'required|string', // Event Type (Online or In-Person)
-        'start_date' => 'required|date', // Event Start Date
-        'end_date' => 'required|date|after_or_equal:start_date', // Event End Date
-        'time' => 'required|string', // Event Time
-        'venue' => 'required|string', // Event Venue (Location/Address)
-        'map_link' => 'nullable|url', // Map Link (Optional)
-        'banner_image' => 'nullable|string', // Event Banner Image (Base64 string or file path)
-        'organizer_name' => 'required|string', // Organizer Name
-        'user_id' => 'required|integer|exists:users,id', // Ensure User exists in Users table
-    ]);
+    {
+        // Validate the incoming data, adding the new fields to the validation rules
+        $validator = $request->validate([
+            'title' => 'required|string|max:255', // Event Title
+            'description' => 'required', // Event Description
+            'category' => 'required|string', // Event Category
+            'type' => 'required|string', // Event Type (Online or In-Person)
+            'start_date' => 'required|date', // Event Start Date
+            'end_date' => 'required|date|after_or_equal:start_date', // Event End Date
+            'time' => 'required|string', // Event Time
+            'venue' => 'required|string', // Event Venue (Location/Address)
+            'map_link' => 'nullable|url', // Map Link (Optional)
+            'banner_image' => 'nullable|string', // Event Banner Image (Base64 string or file path)
+            'organizer_name' => 'required|string', // Organizer Name
+            'user_id' => 'required|integer|exists:users,id', // Ensure User exists in Users table
+            'organizer_contact_info' => 'nullable|string', // Contact Information (Email or Phone)
+            'event_coordinators' => 'nullable|array', // Event Coordinators (Can store as array or JSON)
+            'ticket_price' => 'nullable|numeric', // Ticket Price
+            'registration_deadline' => 'nullable|date', // Registration Deadline
+            'event_capacity' => 'nullable|integer', // Event Capacity
+        ]);
 
-    if (!$validator) {
+        if (!$validator) {
+            return response()->json([
+                'code' => '999',
+                'message' => 'Validation error',
+            ], 400);
+        }
+
+        // Check if user exists
+        $creator = User::find($request->user_id);
+
+        if (!$creator) {
+            return response()->json([
+                'message' => 'User does not exist!',
+            ], 404);
+        }
+
+        // Handle optional banner image
+        $bannerImage = $request->banner_image ?? null;
+
+        // Handle the new fields
+        $organizerContactInfo = $request->organizer_contact_info ?? null;
+        $eventCoordinators = $request->event_coordinators ? json_encode($request->event_coordinators) : null; // Store as JSON
+        $ticketPrice = $request->ticket_price ?? null;
+        $registrationDeadline = $request->registration_deadline ?? null;
+        $eventCapacity = $request->event_capacity ?? null;
+
+        // Create the event
+        $event = Event::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'category' => $request->category,
+            'type' => $request->type,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'time' => $request->time,
+            'venue' => $request->venue,
+            'map_link' => $request->map_link,
+            'banner_image' => $bannerImage,
+            'organizer_name' => $request->organizer_name,
+            'user_id' => $request->user_id,
+            'organizer_contact_info' => $organizerContactInfo,
+            'event_coordinators' => $eventCoordinators,
+            'ticket_price' => $ticketPrice,
+            'registration_deadline' => $registrationDeadline,
+            'event_capacity' => $eventCapacity,
+            'status' => 'Ongoing',
+        ]);
+
         return response()->json([
-            'code' => '999',
-            'message' => 'Validation error',
-        ], 400);
+            'code' => '000',
+            'message' => 'Event created successfully',
+            'data' => $event,
+        ], 201);
     }
 
-    // Check if user exists
-    $creator = User::find($request->user_id);
-
-    if (!$creator) {
-        return response()->json([
-            'message' => 'User does not exist!',
-        ], 404);
-    }
-
-    // Handle optional banner image
-    $bannerImage = $request->banner_image ?? null;
-
-    // Create the event
-    $event = Event::create([
-        'title' => $request->title,
-        'description' => $request->description,
-        'category' => $request->category,
-        'type' => $request->type,
-        'start_date' => $request->start_date,
-        'end_date' => $request->end_date,
-        'time' => $request->time,
-        'venue' => $request->venue,
-        'map_link' => $request->map_link,
-        'banner_image' => $bannerImage,
-        'organizer_name' => $request->organizer_name,
-        'user_id' => $request->user_id,
-        'status' => 'Ongoing',
-    ]);
-
-    return response()->json([
-        'code' => '000',
-        'message' => 'Event created successfully',
-        'data' => $event,
-    ], 201);
-}
 
 
 
