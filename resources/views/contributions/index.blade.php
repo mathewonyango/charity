@@ -101,6 +101,7 @@
                                     <tr class="nk-tb-item nk-tb-head">
                                         {{-- <th class="nk-tb-col"><span class="sub-text">Organizer Email</span></th> --}}
                                         <th class="nk-tb-col"><span class="sub-text">Title</span></th>
+                                        <th class="nk-tb-col"><span class="sub-text">Organizer Email</span></th>
 
                                         <th class="nk-tb-col"><span class="sub-text">Category</span></th>
                                         <th class="nk-tb-col"><span class="sub-text">Goal Amount</span></th>
