@@ -33,7 +33,7 @@ class EventController extends Controller
             'map_link' => $event->map_link,
             'banner_image' => $event->banner_image,
             'organizer_name' => $event->organizer_name,
-            'status' => $event->status,
+            // 'status' => $event->status,
             'is_active' => $event->is_active, // Include is_active status
         ];
     });

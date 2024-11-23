@@ -17,7 +17,7 @@ class ContributionController extends Controller
                 'category' => $contribution->category,
                 'goal_amount' => $contribution->goal_amount,
                 'description' => $contribution->description,
-                'status' => $contribution->status,
+                // 'status' => $contribution->status,
                 'current_amount' => $contribution->currentAmount(), // No error now
                 'is_active' => $contribution->currentAmount() < $contribution->goal_amount && $contribution->end_date && $contribution->end_date->isFuture(),
                 'end_date' => $contribution->end_date ? $contribution->end_date->toDateString() : 'N/A',
