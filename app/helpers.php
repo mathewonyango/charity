@@ -81,25 +81,29 @@ function getInitials($email = null) {
     }
 
     // If single word, take first two characters
-    return strtoupper(substr($name, 0, 2));
-}
+    function getAvatarColors($email) {
+        $colors = [
+            ['bg' => '#e6f3ff', 'text' => '#0068da'],
+            ['bg' => '#f0f7e0', 'text' => '#4a8f29'],
+            ['bg' => '#fff0e6', 'text' => '#d84315'],
+            ['bg' => '#e6e6ff', 'text' => '#3f51b5'],
+            ['bg' => '#fff3e0', 'text' => '#ff9800']
+        ];
 
-function getAvatarColors($email) {
-    $colors = [
-        ['bg' => '#e6f3ff', 'text' => '#0068da'],
-        ['bg' => '#f0f7e0', 'text' => '#4a8f29'],
-        ['bg' => '#fff0e6', 'text' => '#d84315'],
-        ['bg' => '#e6e6ff', 'text' => '#3f51b5'],
-        ['bg' => '#fff3e0', 'text' => '#ff9800']
-    ];
+        // Use "default" if email is null or empty
+        $email = $email ?? 'default';
 
-    // Generate a consistent index based on the email
-    $index = abs(crc32($email)) % count($colors);
+        // Generate a consistent index based on the email
+        $index = abs(crc32($email)) % count($colors);
 
-    return $colors[$index];
-}
+        return $colors[$index];
+    }
+
 
 function getUserAvatarStyle($email) {
+    // Use "default" if email is null or empty
+    $email = $email ?? 'default';
+
     // Generate a consistent color based on the email
     $hash = md5($email);
     $hue = hexdec(substr($hash, 0, 6)) % 360;
@@ -108,6 +112,7 @@ function getUserAvatarStyle($email) {
         'background' => "hsl($hue, 70%, 90%)",
         'color' => "hsl($hue, 70%, 40%)"
     ];
+}
 }
 
 // You can add other global helper functions here if needed.

@@ -17,7 +17,6 @@ class Contribution extends Model
         'goal_amount',
         'description',
         'duration',
-        'end_date',
         'organizer_name',
         'organizer_contact',
         'status',

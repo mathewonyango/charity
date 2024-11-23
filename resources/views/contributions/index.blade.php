@@ -76,6 +76,7 @@
                                             <td class="nk-tb-col">
                                                 <div class="d-flex align-items-center gap-3">
                                                     @php
+                                                    
                                                         $avatarStyle = getUserAvatarStyle($contribution->user->email);
                                                     @endphp
                                                     <div class="user-avatar rounded-circle d-none d-sm-flex align-items-center justify-content-center"
