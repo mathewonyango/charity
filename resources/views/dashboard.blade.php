@@ -45,7 +45,7 @@
                                 <div class="col-md-4">
                                     <div class="card bg-light">
                                         <div class="nk-wgw sm">
-                                            <a class="nk-wgw-inner" href="{{ route('portal.contributions.index') }}">
+                                            <a class="nk-wgw-inner" href="{{ route('portal.Pcontributions.index') }}">
                                                 <div class="nk-wgw-name">
                                                     <div class="nk-wgw-icon">
                                                         <em class="icon ni ni-money"></em>

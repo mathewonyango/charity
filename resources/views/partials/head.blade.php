@@ -77,5 +77,14 @@
         }
     </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.body.style.transform = "scale(0.75)";
+        document.body.style.transformOrigin = "0 0";
+        document.body.style.width = "133.33%"; // Adjust the width to avoid horizontal scrollbars
+    });
+</script>
+
+
 
 </head>
