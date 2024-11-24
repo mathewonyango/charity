@@ -41,7 +41,7 @@
                                         <th class="nk-tb-col"><span class="sub-text">Phone Number</span></th>
                                         <th class="nk-tb-col"><span class="sub-text">Role</span></th>
                                         <th class="nk-tb-col"><span class="sub-text">Status</span></th>
-                                        {{-- <th class="nk-tb-col"><span class="sub-text">Created At</span></th> --}}
+                                        <th class="nk-tb-col"><span class="sub-text">Created At</span></th>
                                         <th class="nk-tb-col nk-tb-col-tools text-right">Actions</th>
                                     </tr>
                                 </thead>
@@ -74,25 +74,27 @@
                                                     {{ ucfirst($user->status) }}
                                                 </span>
                                             </td>
-                                            {{-- <td class="nk-tb-col">{{ $user->created_at->format('d/m/Y') }}</td> --}}
+                                            <td class="nk-tb-col">{{ $user->created_at->format('d/m/Y') }}</td>
                                             <td class="nk-tb-col nk-tb-col-tools">
-                                                <ul class="nk-tb-actions gx-1">
+                                                <ul class="nk-tb-actions gx-1 d-flex">
+                                                    <!-- Edit Button -->
                                                     <li>
-                                                        <a href="{{ route('portal.users.edit', $user->id) }}" class="btn btn-sm btn-primary">
-                                                            <em class="icon ni ni-edit"></em> Edit
+                                                        <a href="{{ route('portal.users.edit', $user->id) }}" class="btn btn-icon btn-sm btn-primary" data-bs-toggle="tooltip" title="Edit User" data-bs-custom-class="custom-tooltip">
+                                                            <em class="icon ni ni-edit"></em>
                                                         </a>
                                                     </li>
+                                                    <!-- Activate/Deactivate Toggle Button -->
                                                     <li>
                                                         <form action="{{ route('portal.users.toggle-status', $user->id) }}" method="POST" style="display:inline;">
                                                             @csrf
-                                                            <button type="submit" class="btn btn-sm btn-{{ $user->status === 'active' ? 'danger' : 'success' }}">
+                                                            <button type="submit" class="btn btn-icon btn-sm btn-{{ $user->status === 'active' ? 'danger' : 'success' }}" data-bs-toggle="tooltip" title="{{ $user->status === 'active' ? 'Deactivate User' : 'Activate User' }}" data-bs-custom-class="custom-tooltip">
                                                                 <em class="icon ni ni-shield-off"></em>
-                                                                {{ $user->status === 'active' ? 'Deactivate' : 'Activate' }}
                                                             </button>
                                                         </form>
                                                     </li>
                                                 </ul>
                                             </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>

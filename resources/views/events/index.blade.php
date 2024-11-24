@@ -99,23 +99,25 @@
                                             <td class="nk-tb-col">{{$event->start_date ?? 'N/A' }}</td>
                                             <td class="nk-tb-col">{{$event->end_date ?? 'N/A' }}</td>
                                             <td class="nk-tb-col nk-tb-col-tools">
-                                                <ul class="nk-tb-actions gx-1">
+                                                <ul class="nk-tb-actions gx-1 d-flex">
+                                                    <!-- Edit Button -->
                                                     <li>
-                                                        <a href="{{ route('portal.events.edit', $event->id) }}" class="btn btn-sm btn-primary">
-                                                            <em class="icon ni ni-edit"></em> Edit
+                                                        <a href="{{ route('portal.events.edit', $event->id) }}" class="btn btn-icon btn-sm btn-primary" data-bs-toggle="tooltip" title="Edit" data-bs-custom-class="custom-tooltip">
+                                                            <em class="icon ni ni-edit"></em>
                                                         </a>
                                                     </li>
+                                                    <!-- Approve/Pending Toggle Button -->
                                                     <li>
                                                         <form action="{{ route('portal.events.toggle-status', $event->id) }}" method="POST" style="display:inline;">
                                                             @csrf
-                                                            <button type="submit" class="btn btn-sm btn-{{ $event->status === 'pending' ? 'success' : 'warning' }}">
+                                                            <button type="submit" class="btn btn-icon btn-sm btn-{{ $event->status === 'pending' ? 'success' : 'warning' }}" data-bs-toggle="tooltip" title="{{ $event->status === 'pending' ? 'Approve' : 'Set to Pending' }}" data-bs-custom-class="custom-tooltip">
                                                                 <em class="icon ni ni-check-circle"></em>
-                                                                {{ $event->status === 'pending' ? 'Approve' : 'Pending' }}
                                                             </button>
                                                         </form>
                                                     </li>
                                                 </ul>
                                             </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>

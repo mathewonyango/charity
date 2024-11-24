@@ -258,4 +258,43 @@ public function portalCreateEvent(){
     return view('events.create');
 }
 
+
+public function edit($id)
+{
+    $event = Event::findOrFail($id); // Fetch the event
+    // dd($event);
+    return view('events.edit', compact('event'));
+}
+
+// Update the event in the database
+public function update(Request $request, $id)
+{
+
+    // dd($request);
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'category' => 'required|string|max:255',
+        'type' => 'required|string|max:255',
+        'start_date' => 'required|date',
+        'end_date' => 'required|date|after_or_equal:start_date',
+        'time' => 'nullable',
+        'venue' => 'nullable|string|max:255',
+        'map_link' => 'nullable|url',
+        'organizer_name' => 'required|string|max:255',
+        'organizer_contact_info' => 'nullable|json',
+        'event_coordinators' => 'nullable|json',
+        'ticket_price' => 'nullable|numeric|min:0',
+        'registration_deadline' => 'nullable|date|before_or_equal:end_date',
+        'event_capacity' => 'nullable|integer|min:1',
+        'status' => 'required|in:pending,approved,cancelled',
+    ]);
+
+    $event = Event::findOrFail($id);
+    $event->update($validated); // Update the event with validated data
+
+    return redirect()->route('portal.Pevents.index')->with('success', 'Event updated successfully.');
+}
+
+
 }
