@@ -133,28 +133,28 @@
                                             </td> --}}
                                             {{-- <td class="nk-tb-col">{{ $contribution->created_at->format('d/m/Y') }}</td> --}}
                                             <td class="nk-tb-col nk-tb-col-tools">
-                                                <ul class="nk-tb-actions gx-1">
+                                                <ul class="nk-tb-actions gx-1 d-flex">
                                                     <li>
-                                                        <a href="{{ route('portal.contributions.show', $contribution->id) }}" class="btn btn-sm btn-info">
-                                                            <em class="icon ni ni-eye"></em> View
+                                                        <a href="{{ route('portal.contributions.show', $contribution->id) }}" class="btn btn-icon btn-sm btn-info" data-bs-toggle="tooltip" title="View">
+                                                            <em class="icon ni ni-eye"></em>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ route('portal.Pcontributions.edit', $contribution->id) }}" class="btn btn-sm btn-primary">
-                                                            <em class="icon ni ni-edit"></em> Edit
+                                                        <a href="{{ route('portal.Pcontributions.edit', $contribution->id) }}" class="btn btn-icon btn-sm btn-primary" data-bs-toggle="tooltip" title="Edit">
+                                                            <em class="icon ni ni-edit"></em>
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <form action="{{ route('portal.contributions.toggle-status', $contribution->id) }}" method="POST" style="display:inline;">
                                                             @csrf
-                                                            <button type="submit" class="btn btn-sm btn-{{ $contribution->status === 'pending' ? 'success' : 'warning' }}">
+                                                            <button type="submit" class="btn btn-icon btn-sm btn-{{ $contribution->status === 'pending' ? 'success' : 'warning' }}" data-bs-toggle="tooltip" title="{{ $contribution->status === 'pending' ? 'Approve' : 'Pending' }}">
                                                                 <em class="icon ni ni-check-circle"></em>
-                                                                {{ $contribution->status === 'pending' ? 'Approve' : 'Pending' }}
                                                             </button>
                                                         </form>
                                                     </li>
                                                 </ul>
                                             </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>
