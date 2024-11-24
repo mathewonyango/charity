@@ -226,6 +226,11 @@ public function update(Request $request, $id)
     return redirect()->back();
 }
 
+public function show(Contribution $contribution)
+{
+    return view('contributions.show', compact('contribution'));
+}
+
 }
 
 

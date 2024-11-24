@@ -24,6 +24,8 @@ use App\Http\Controllers\LogViewerController;
 Route::group(['prefix' => 'portal', 'as' => 'portal.'], function () {
     Route::get('/transactions', [PaystackController::class, 'index'])->name('transactions.index');
     Route::get('/transactions/{transaction}', [PaystackController::class, 'show'])->name('transactions.show');
+    Route::get('/portal/contributions/{contribution}', [ContributionController::class, 'show'])->name('contributions.show');
+
 });
 
 Route::get('/deploy', [DeploymentController::class, 'index'])->name('deploy.index');
@@ -63,6 +65,7 @@ Route::post('/api/reset-password', [UserController::class, 'resetPassword']);
 Route::get('/api/contributions', [ContributionController::class, 'index']);
 Route::get('/api/user/contributions', [ContributionController::class, 'userContributions']);
 Route::post('/api/contributions', [ContributionController::class, 'store']);
+
 
 
 

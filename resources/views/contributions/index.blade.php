@@ -135,6 +135,11 @@
                                             <td class="nk-tb-col nk-tb-col-tools">
                                                 <ul class="nk-tb-actions gx-1">
                                                     <li>
+                                                        <a href="{{ route('portal.contributions.show', $contribution->id) }}" class="btn btn-sm btn-info">
+                                                            <em class="icon ni ni-eye"></em> View
+                                                        </a>
+                                                    </li>
+                                                    <li>
                                                         <a href="{{ route('portal.Pcontributions.edit', $contribution->id) }}" class="btn btn-sm btn-primary">
                                                             <em class="icon ni ni-edit"></em> Edit
                                                         </a>
