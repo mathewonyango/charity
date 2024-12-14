@@ -3,8 +3,8 @@
 
 @section('content')
     <div class="container-fluid"
-        style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; overflow-y: auto; padding: 20px; background-color: #f7f9fc;">
-        <div class="container" style="margin-left:20%">
+        style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; overflow-y: auto; padding: 30px; background-color: #f7f9fc;">
+        <div class="container" style="margin-left:22%; margin-right:22%;">
             <div class="nk-content nk-content-fluid">
                 <div class="container-xl wide-lg">
                     <div class="nk-content-body">
