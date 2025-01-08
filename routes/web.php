@@ -21,12 +21,17 @@ use App\Http\Controllers\LogViewerController;
 
 
 
+
+Route::post('/pay', [App\Http\Controllers\PaystackController::class, 'redirectToGateway'])->name('pay');
+Route::get('/payment/callback', [App\Http\Controllers\PaystackController::class, 'handleGatewayCallback'])->name('payment');
+
 Route::group(['prefix' => 'portal', 'as' => 'portal.'], function () {
     Route::get('/transactions', [PaystackController::class, 'index'])->name('transactions.index');
     Route::get('/transactions/{transaction}', [PaystackController::class, 'show'])->name('transactions.show');
     Route::get('/portal/contributions/{contribution}', [ContributionController::class, 'show'])->name('contributions.show');
 
 });
+
 
 Route::get('/deploy', [DeploymentController::class, 'index'])->name('deploy.index');
 Route::post('/deploy', [DeploymentController::class, 'deploy'])->name('deploy.start');
