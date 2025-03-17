@@ -6,5 +6,7 @@
     AllowOverride All
     Require all granted        
   </Directory>
-  ServerName localhost:8081
+
 </VirtualHost>
+
+Then add inbound rule in firewall  to this you will add port 8081
