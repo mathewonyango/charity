@@ -126,6 +126,12 @@ class PaystackController extends Controller
             'currency' => 'required|string',
             'reference' => 'required|string|unique:paystack,reference',
             'metadata' => 'nullable|json',
+            'reference' => [function ($attribute, $value, $fail) {
+                if (Paystack::where('reference', $value)->exists()) {
+                    $fail('A payment has already been processed with this reference ID ' . $value);
+                }
+            }],
+            // 'message' => 'A payment has already been processed with this reference ID',
             'user_id' => 'required',
         ]);
 

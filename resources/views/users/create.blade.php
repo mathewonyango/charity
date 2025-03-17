@@ -70,7 +70,7 @@
                                                 <label for="phone" class="form-label">Phone Number</label>
                                             </div>
                                             <div class="form-control-group">
-                                                <input type="text" id="phone" class="form-control form-control-lg" name="phone_number" placeholder="0722******">
+                                                <input type="text" id="phone" class="form-control form-control-lg"  maxlength="10" name="phone_number" placeholder="0722******">
                                             </div>
                                         </div>
                                     </div>

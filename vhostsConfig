@@ -1,0 +1,10 @@
+
+<VirtualHost *:8081>
+  DocumentRoot "C:/Projects/charity/public"
+  <Directory "C:/Projects/charity">
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted        
+  </Directory>
+  ServerName localhost:8081
+</VirtualHost>
